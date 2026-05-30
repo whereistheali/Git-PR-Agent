@@ -42,7 +42,10 @@ OPENROUTER_API_KEY=your_openrouter_api_key
 OPENROUTER_MODEL=anthropic/claude-3-haiku
 ```
 
-**Note**: Your GitHub Personal Access Token needs `repo` scope permissions to read code, create branches, and open PRs.
+**Note on GitHub Token permissions**: 
+To use the automated Fork & Pull Request feature on repositories you **do not own**, you **MUST use a Classic Personal Access Token** with the `repo` scope checked. 
+
+GitHub's new "Fine-Grained" tokens are restricted to repositories you explicitly select during creation. Since you cannot select repositories you don't own, a Fine-Grained token will always result in a `403 Forbidden` error when attempting to open a Pull Request against a third-party repository.
 
 ### 3. Run the Application
 

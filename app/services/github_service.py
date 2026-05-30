@@ -1,6 +1,7 @@
 from github import Github, Auth
 from app.core.config import settings
 import uuid
+import time
 
 class GithubService:
     def __init__(self):
@@ -9,6 +10,24 @@ class GithubService:
 
     def get_repo(self, repo_name: str):
         return self.client.get_repo(repo_name)
+
+    def get_current_user(self):
+        return self.client.get_user().login
+
+    def fork_repository(self, original_repo):
+        user = self.client.get_user()
+        fork = user.create_fork(original_repo)
+        
+        # Wait for GitHub to complete the fork process (it is asynchronous on GitHub's side)
+        for _ in range(15):
+            try:
+                repo = self.client.get_repo(fork.full_name)
+                # Check if branches are available, meaning clone finished
+                list(repo.get_branches())
+                return repo
+            except Exception:
+                time.sleep(2)
+        return fork
 
     def get_all_python_files(self, repo, branch="main"):
         files = []
@@ -37,10 +56,10 @@ class GithubService:
             branch=branch_name
         )
 
-    def create_pull_request(self, repo, branch_name, base_branch="main", title="Auto Bug Fix", body="Automated bug fixes proposed by AI Agent."):
+    def create_pull_request(self, repo, head_branch, base_branch="main", title="Auto Bug Fix", body="Automated bug fixes proposed by AI Agent."):
         return repo.create_pull(
             title=title,
             body=body,
-            head=branch_name,
+            head=head_branch,
             base=base_branch
         )
