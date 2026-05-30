@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git PR AI Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3498db;
+            width: 24px;
+            height: 24px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans text-gray-800">
+
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+            <div class="px-6 py-8 border-b border-gray-200 bg-blue-600 text-white">
+                <h1 class="text-3xl font-bold">Git PR AI Agent</h1>
+                <p class="mt-2 text-blue-100">Automatically analyze repositories, spot bugs, and create PRs.</p>
+            </div>
+
+            <div class="p-6">
+                <form id="analyzeForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="col-span-2">
+                            <label for="repoName" class="block text-sm font-medium text-gray-700">Repository Name</label>
+                            <input type="text" id="repoName" name="repoName" placeholder="e.g., owner/repo" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div class="col-span-1">
+                            <label for="branchName" class="block text-sm font-medium text-gray-700">Branch</label>
+                            <input type="text" id="branchName" name="branchName" value="main" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" id="submitBtn" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <span id="btnText">Analyze & Fix</span>
+                            <div id="btnLoader" class="loader ml-2 hidden"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="resultsContainer" class="mt-8 hidden space-y-6">
+            <!-- Dynamic Content Injected Here -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('analyzeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const repoName = document.getElementById('repoName').value;
+            const branchName = document.getElementById('branchName').value;
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnLoader = document.getElementById('btnLoader');
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            // Loading State
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75');
+            btnText.innerText = 'Analyzing Repository...';
+            btnLoader.classList.remove('hidden');
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/v1/analyze-and-fix', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        repo_name: repoName,
+                        branch: branchName
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Something went wrong');
+                }
+
+                renderResults(data);
+
+            } catch (error) {
+                renderError(error.message);
+            } finally {
+                // Reset Loading State
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75');
+                btnText.innerText = 'Analyze & Fix';
+                btnLoader.classList.add('hidden');
+            }
+        });
+
+        function renderResults(data) {
+            const container = document.getElementById('resultsContainer');
+            container.classList.remove('hidden');
+
+            let html = `
+                <div class="bg-white shadow overflow-hidden sm:rounded-lg border-l-4 border-green-500">
+                    <div class="px-4 py-5 sm:px-6">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Analysis Complete</h3>
+                        <p class="mt-1 max-w-2xl text-sm text-gray-500">${data.message}</p>
+                    </div>
+                </div>
+            `;
+
+            if (data.pr_url) {
+                html += `
+                    <div class="bg-blue-50 p-4 rounded-md">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3 flex-1 md:flex md:justify-between">
+                                <p class="text-sm text-blue-700">Pull Request Created Successfully!</p>
+                                <p class="mt-3 text-sm md:mt-0 md:ml-6">
+                                    <a href="${data.pr_url}" target="_blank" class="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600">View PR &rarr;</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (data.bugs_found && data.bugs_found.length > 0) {
+                html += `<div class="bg-white shadow overflow-hidden sm:rounded-lg"><div class="px-4 py-5 sm:px-6"><h3 class="text-lg leading-6 font-medium text-gray-900">Bugs Found & Fixed</h3></div><ul class="divide-y divide-gray-200">`;
+                
+                data.bugs_found.forEach(bug => {
+                    html += `
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium text-indigo-600 truncate">${bug.file_path}</p>
+                            </div>
+                            <div class="mt-2 sm:flex sm:justify-between">
+                                <div class="sm:flex">
+                                    <p class="flex items-center text-sm text-gray-500">
+                                        ${bug.description}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-4 bg-gray-50 rounded p-4 overflow-x-auto">
+                                <pre class="text-xs text-gray-700"><code>${escapeHtml(bug.proposed_fix)}</code></pre>
+                            </div>
+                        </li>
+                    `;
+                });
+                
+                html += `</ul></div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function renderError(message) {
+            const container = document.getElementById('resultsContainer');
+            container.classList.remove('hidden');
+            
+            container.innerHTML = `
+                <div class="bg-red-50 p-4 rounded-md border-l-4 border-red-500">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">Error Analyzing Repository</h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                <p>${message}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                 .replace(/&/g, "&amp;")
+                 .replace(/</g, "&lt;")
+                 .replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;")
+                 .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
