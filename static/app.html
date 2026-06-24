@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitPR AI — Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        archivo: ['"Archivo Black"', 'sans-serif'],
+                        fredoka: ['Fredoka', 'sans-serif'],
+                    },
+                    colors: {
+                        cartoon: {
+                            50: '#FFFBEB', 100: '#FEF3C7', 200: '#FDE68A',
+                            300: '#FCD34D', 400: '#FBBF24', 500: '#F59E0B',
+                            600: '#D97706', 700: '#B45309', 800: '#92400E', 900: '#78350F',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Fredoka', sans-serif; }
+
+        .app-card {
+            border: 4px solid #D97706;
+            border-radius: 2rem;
+            box-shadow: 14px 14px 0px #B45309;
+        }
+
+        .btn-cartoon {
+            border: 3px solid #1C1917;
+            border-radius: 9999px;
+            box-shadow: 6px 6px 0px #1C1917;
+            transition: box-shadow 0.15s ease, transform 0.15s ease;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+        }
+        .btn-cartoon:hover {
+            box-shadow: 3px 3px 0px #1C1917;
+            transform: translate(3px, 3px);
+        }
+        .btn-cartoon:active {
+            box-shadow: 0px 0px 0px transparent;
+            transform: translate(6px, 6px);
+        }
+
+        .btn-ghost {
+            border: 3px solid #D97706;
+            border-radius: 9999px;
+            transition: background 0.2s ease;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+        }
+        .btn-ghost:hover { background: #FEF3C7; }
+
+        .input-cartoon {
+            border: 3px solid #D97706;
+            border-radius: 1rem;
+            font-family: 'Fredoka', sans-serif;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .input-cartoon:focus {
+            outline: none;
+            border-color: #B45309;
+            box-shadow: 4px 4px 0px #D97706;
+        }
+        .input-cartoon::placeholder {
+            color: #A16207;
+            opacity: 0.6;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .star-doodle {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.12;
+        }
+
+        .float { animation: float 4s ease-in-out infinite; }
+        .float-delay-1 { animation-delay: 1s; }
+        .float-delay-2 { animation-delay: 2s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-16px) rotate(4deg); }
+        }
+
+        .slide-up { animation: slideUp 0.5s ease forwards; }
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-dot:nth-child(1) { animation: loadDot 1.2s ease-in-out infinite; }
+        .loading-dot:nth-child(2) { animation: loadDot 1.2s ease-in-out 0.15s infinite; }
+        .loading-dot:nth-child(3) { animation: loadDot 1.2s ease-in-out 0.3s infinite; }
+        @keyframes loadDot {
+            0%, 80%, 100% { transform: scale(0.4); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        #resultsArea {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.4s ease;
+        }
+        #resultsArea.open {
+            max-height: 2000px;
+            opacity: 1;
+        }
+
+        .result-card {
+            border: 3px solid #1C1917;
+            border-radius: 1.25rem;
+            box-shadow: 6px 6px 0px #1C1917;
+        }
+        .result-card.success { border-color: #16A34A; box-shadow: 6px 6px 0px #16A34A; }
+        .result-card.error { border-color: #DC2626; box-shadow: 6px 6px 0px #DC2626; }
+
+        @media (max-width: 640px) {
+            .app-card {
+                border-width: 3px; border-radius: 1.5rem;
+                box-shadow: 8px 8px 0px #B45309;
+            }
+            .btn-cartoon { box-shadow: 4px 4px 0px #1C1917; }
+            .btn-cartoon:hover { box-shadow: 2px 2px 0px #1C1917; transform: translate(2px, 2px); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-cartoon-50 via-cartoon-100 to-cartoon-200 min-h-screen font-fredoka text-stone-900 overflow-x-hidden">
+
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="blob w-96 h-96 bg-cartoon-300 -top-20 -left-20"></div>
+        <div class="blob w-80 h-80 bg-cartoon-400 bottom-0 -right-16"></div>
+        <div class="star-doodle top-12 left-[12%] float text-amber-400/20 text-5xl">✦</div>
+        <div class="star-doodle bottom-32 right-[8%] float float-delay-1 text-amber-500/20 text-4xl">★</div>
+        <svg class="absolute bottom-0 left-0 w-full h-32 text-cartoon-300/30" preserveAspectRatio="none" viewBox="0 0 1440 120" fill="currentColor">
+            <path d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+        </svg>
+    </div>
+
+    <main class="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="app-card w-full max-w-2xl bg-white/95 backdrop-blur-sm p-6 sm:p-10">
+
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-cartoon-500 flex items-center justify-center text-white text-lg font-archivo shadow-[3px_3px_0px_#92400E]">
+                        G
+                    </div>
+                    <span class="text-cartoon-700 font-archivo tracking-tight">GitPR AI</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 bg-cartoon-50 border-2 border-cartoon-300 rounded-full px-4 py-1.5">
+                        <div class="w-7 h-7 rounded-full bg-cartoon-500 flex items-center justify-center text-white text-xs font-bold shadow-[2px_2px_0px_#B45309]">
+                            <span id="userInitial">U</span>
+                        </div>
+                        <span id="userLogin" class="font-semibold text-sm text-stone-800">@username</span>
+                    </div>
+                    <button id="disconnectBtn" class="btn-ghost text-xs text-cartoon-700 px-3 py-1.5">
+                        Leave
+                    </button>
+                </div>
+            </div>
+
+            <hr class="border-cartoon-200 mb-8">
+
+            <div id="loadingAuth" class="text-center py-12">
+                <div class="flex items-center justify-center gap-2 mb-3">
+                    <span class="loading-dot w-3 h-3 bg-cartoon-500 rounded-full inline-block"></span>
+                    <span class="loading-dot w-3 h-3 bg-cartoon-500 rounded-full inline-block"></span>
+                    <span class="loading-dot w-3 h-3 bg-cartoon-500 rounded-full inline-block"></span>
+                </div>
+                <p class="text-stone-500">Checking authentication...</p>
+            </div>
+
+            <div id="appContent" class="hidden space-y-6">
+
+                <div class="space-y-4">
+                    <label class="block font-semibold text-stone-800">
+                        Repository
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="text" id="repoName" placeholder="e.g. owner/repo" required
+                            class="input-cartoon flex-1 px-4 py-3 bg-white text-stone-900 text-base">
+                        <input type="text" id="branchName" value="main" required
+                            class="input-cartoon w-full sm:w-28 px-4 py-3 bg-white text-stone-900 text-base">
+                    </div>
+
+                    <button type="button" id="submitBtn" disabled
+                        class="btn-cartoon w-full bg-cartoon-500 text-white px-8 py-3.5 text-base flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                        <span id="btnText">Analyze & Fix</span>
+                        <span id="btnLoader" class="flex items-center gap-1 hidden">
+                            <span class="loading-dot w-2 h-2 bg-white rounded-full inline-block"></span>
+                            <span class="loading-dot w-2 h-2 bg-white rounded-full inline-block"></span>
+                            <span class="loading-dot w-2 h-2 bg-white rounded-full inline-block"></span>
+                        </span>
+                    </button>
+                </div>
+
+                <div id="resultsArea">
+                    <div id="resultsContent"></div>
+                </div>
+
+            </div>
+
+            <div id="authFailed" class="hidden text-center py-12 space-y-4">
+                <span class="text-5xl">🔒</span>
+                <p class="text-stone-600">GitHub account not connected.</p>
+                <a href="/" class="btn-cartoon inline-block bg-stone-900 text-white px-8 py-3 no-underline">
+                    Go back
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const userInitial = document.getElementById('userInitial');
+        const userLogin = document.getElementById('userLogin');
+        const disconnectBtn = document.getElementById('disconnectBtn');
+        const repoName = document.getElementById('repoName');
+        const branchName = document.getElementById('branchName');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnLoader = document.getElementById('btnLoader');
+        const resultsArea = document.getElementById('resultsArea');
+        const resultsContent = document.getElementById('resultsContent');
+        const loadingAuth = document.getElementById('loadingAuth');
+        const appContent = document.getElementById('appContent');
+        const authFailed = document.getElementById('authFailed');
+
+        disconnectBtn.addEventListener('click', async () => {
+            await fetch('/api/v1/auth/github/logout', { method: 'POST' });
+            window.location.href = '/';
+        });
+
+        repoName.addEventListener('input', validateForm);
+        branchName.addEventListener('input', validateForm);
+
+        function validateForm() {
+            const valid = repoName.value.trim().length > 0 && branchName.value.trim().length > 0;
+            submitBtn.disabled = !valid;
+            if (valid) {
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        submitBtn.addEventListener('click', async () => {
+            if (submitBtn.disabled) return;
+
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            btnText.textContent = 'Analyzing';
+            btnLoader.classList.remove('hidden');
+            resultsArea.classList.remove('open');
+            resultsContent.innerHTML = '';
+
+            try {
+                const res = await fetch('/api/v1/analyze-and-fix', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        repo_name: repoName.value.trim(),
+                        branch: branchName.value.trim()
+                    })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    renderResult('error', data.detail || 'Something went wrong');
+                } else {
+                    renderResult('success', data);
+                }
+            } catch (err) {
+                renderResult('error', err.message);
+            } finally {
+                btnText.textContent = 'Analyze & Fix';
+                btnLoader.classList.add('hidden');
+                validateForm();
+            }
+        });
+
+        function renderResult(type, data) {
+            if (type === 'error') {
+                resultsContent.innerHTML = `
+                    <div class="result-card error bg-red-50 p-5 mt-4">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">✕</span>
+                            <span class="font-fredoka font-semibold text-stone-800">Oops!</span>
+                        </div>
+                        <p class="text-stone-600 text-sm">${escapeHtml(data)}</p>
+                    </div>
+                `;
+            } else {
+                let bugsHtml = '';
+                if (data.bugs_found && data.bugs_found.length > 0) {
+                    bugsHtml = data.bugs_found.map(bug => `
+                        <div class="bg-cartoon-50 border-2 border-cartoon-300 rounded-xl p-4 mt-3">
+                            <p class="font-fredoka font-semibold text-sm text-stone-800 mb-1">${escapeHtml(bug.file_path)}</p>
+                            <p class="text-sm text-stone-600 mb-3">${escapeHtml(bug.description)}</p>
+                            <pre class="bg-stone-900 text-cartoon-200 text-xs rounded-xl p-4 overflow-x-auto leading-relaxed"><code>${escapeHtml(bug.proposed_fix)}</code></pre>
+                        </div>
+                    `).join('');
+                }
+
+                resultsContent.innerHTML = `
+                    <div class="result-card success bg-green-50 p-5 mt-4">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">✦</span>
+                            <span class="font-fredoka font-semibold text-stone-800">All Done!</span>
+                        </div>
+                        <p class="text-stone-600 text-sm">${escapeHtml(data.message)}</p>
+                        ${data.pr_url ? `
+                            <a href="${data.pr_url}" target="_blank" class="btn-cartoon inline-flex items-center gap-2 bg-stone-900 text-white px-6 py-2.5 text-sm mt-4 no-underline w-auto">
+                                View Pull Request →
+                            </a>
+                        ` : ''}
+                    </div>
+                    ${bugsHtml}
+                `;
+            }
+            resultsArea.classList.add('open');
+            resultsContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        async function init() {
+            try {
+                const res = await fetch('/api/v1/auth/github/status');
+                const data = await res.json();
+                if (data.connected) {
+                    loadingAuth.classList.add('hidden');
+                    appContent.classList.remove('hidden');
+                    userLogin.textContent = '@' + data.login;
+                    userInitial.textContent = data.login.charAt(0).toUpperCase();
+                    validateForm();
+                } else {
+                    loadingAuth.classList.add('hidden');
+                    authFailed.classList.remove('hidden');
+                }
+            } catch {
+                loadingAuth.classList.add('hidden');
+                authFailed.classList.remove('hidden');
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

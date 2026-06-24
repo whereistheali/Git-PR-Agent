@@ -5,13 +5,13 @@ from app.models.schemas import BugReport, AgentResponse
 
 class AgentService:
     def __init__(self):
-        self.github = GithubService()
         self.llm = LLMService()
 
-    async def process_repository(self, repo_name: str, branch: str = "main") -> AgentResponse:
+    async def process_repository(self, repo_name: str, branch: str = "main", access_token: str = "") -> AgentResponse:
+        github = GithubService(access_token)
         # Fetch repo and files in a separate thread to avoid blocking the async event loop
-        repo = await asyncio.to_thread(self.github.get_repo, repo_name)
-        files = await asyncio.to_thread(self.github.get_all_python_files, repo, branch)
+        repo = await asyncio.to_thread(github.get_repo, repo_name)
+        files = await asyncio.to_thread(github.get_all_python_files, repo, branch)
         
         async def analyze_file(file):
             # Skip empty or large files for simplicity
@@ -54,31 +54,31 @@ class AgentService:
 
         if not has_push_access:
             print(f"No push access to {repo_name}. Forking repository...")
-            target_repo = await asyncio.to_thread(self.github.fork_repository, repo)
-            current_user = await asyncio.to_thread(self.github.get_current_user)
+            target_repo = await asyncio.to_thread(github.fork_repository, repo)
+            current_user = await asyncio.to_thread(github.get_current_user)
             head_branch_prefix = f"{current_user}:"
             print(f"Successfully configured fork at {target_repo.full_name}")
 
         # Apply fixes and create PR sequentially (running blocking calls in threads)
-        fix_branch = await asyncio.to_thread(self.github.create_fix_branch, target_repo, branch)
+        fix_branch = await asyncio.to_thread(github.create_fix_branch, target_repo, branch)
         head_branch = f"{head_branch_prefix}{fix_branch}"
         
         pr_body = "### Automated Bug Fixes & Improvements\\n\\n"
         for fix in fixes_to_apply:
             await asyncio.to_thread(
-                self.github.commit_fix,
+                github.commit_fix,
                 target_repo, fix_branch, fix["path"], fix["code"], f"Update {fix['path']}"
             )
             pr_body += f"- **{fix['path']}**: {fix['desc']}\\n"
 
         try:
             pr = await asyncio.to_thread(
-                self.github.create_pull_request,
+                github.create_pull_request,
                 repo, head_branch, branch, "Auto-generated: Bug fixes & Improvements by AI Agent", pr_body
             )
         except Exception as e:
             if "403" in str(e):
-                raise Exception("GitHub API 403 Forbidden: You are likely using a Fine-Grained Personal Access Token. Fine-grained tokens cannot create Pull Requests on repositories you do not own. Please generate a 'Classic' Personal Access Token with the 'repo' scope and update your .env file.")
+                raise Exception("GitHub API 403 Forbidden: The connected GitHub account does not have enough permission to create this pull request.")
             raise e
 
         return AgentResponse(
