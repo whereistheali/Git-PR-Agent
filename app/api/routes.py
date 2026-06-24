@@ -4,7 +4,7 @@ import secrets
 from urllib import parse, request as urllib_request
 
 from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 
 from github import GithubException
 
@@ -66,6 +66,33 @@ async def analyze_and_fix_repo(request: Request, payload: RepoRequest):
         raise HTTPException(status_code=status, detail=gh_message or str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/analyze-and-fix/stream")
+async def analyze_and_fix_stream(request: Request, repo: str, branch: str = "main"):
+    access_token = request.session.get("github_access_token")
+    if not access_token:
+        raise HTTPException(status_code=401, detail="GitHub account is not connected")
+
+    try:
+        repo_name = parse_repo_name(repo)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    async def event_stream():
+        try:
+            async for event in agent_service.process_repository_stream(repo_name, branch, access_token):
+                yield f"data: {json.dumps(event)}\n\n"
+        except GithubException as e:
+            status = e.status if hasattr(e, "status") else 500
+            msg = "Repository not found or access denied."
+            if status == 404:
+                msg = f"Repository '{repo}' not found."
+            yield f"data: {json.dumps({'type': 'error', 'message': msg})}\n\n"
+        except Exception as e:
+            yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
 
 
 @router.get("/auth/github/login")

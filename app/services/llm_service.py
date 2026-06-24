@@ -11,16 +11,17 @@ class LLMService:
 
     async def analyze_code_for_bugs(self, file_path: str, code: str) -> dict:
         prompt = f"""
-        Analyze the following Python code from '{file_path}' for bugs, syntax errors, typos, logic errors, anti-patterns, or potential improvements.
-        Pay very close attention to undefined variables, misspelled class names (e.g. typos in framework initializations like Fsk instead of Flask), and missing imports.
+        Analyze the following Python code from '{file_path}' and report ONLY real bugs, syntax errors, typos in identifiers, logic errors, undefined variables, missing imports, or code that will crash at runtime.
         
-        If no bugs or improvements are found, simply reply with the word: CLEAN
+        Do NOT report trivial style suggestions, PEP-8 formatting, best-practice improvements, or cosmetic changes.
         
-        If issues are found, you MUST respond using EXACTLY this format:
+        If the code has NO actual bugs that would cause it to fail, simply reply with the word: CLEAN
+        
+        If real bugs are found, you MUST respond using EXACTLY this format:
         
         ISSUES_FOUND
         <description>
-        Write a concise description of the bugs or improvements here.
+        Write a concise description of the bug or error here.
         </description>
         <fixed_code>
         Write the COMPLETE fixed code here. Do not use markdown blocks inside this tag.

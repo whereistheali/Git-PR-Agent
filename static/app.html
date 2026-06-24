@@ -17,11 +17,7 @@
                         fredoka: ['Fredoka', 'sans-serif'],
                     },
                     colors: {
-                        cartoon: {
-                            50: '#FFFBEB', 100: '#FEF3C7', 200: '#FDE68A',
-                            300: '#FCD34D', 400: '#FBBF24', 500: '#F59E0B',
-                            600: '#D97706', 700: '#B45309', 800: '#92400E', 900: '#78350F',
-                        }
+                        cartoon: { 50: '#FFFBEB', 100: '#FEF3C7', 200: '#FDE68A', 300: '#FCD34D', 400: '#FBBF24', 500: '#F59E0B', 600: '#D97706', 700: '#B45309', 800: '#92400E', 900: '#78350F' }
                     }
                 }
             }
@@ -38,130 +34,101 @@
         }
 
         .btn-cartoon {
-            border: 3px solid #1C1917;
-            border-radius: 9999px;
+            border: 3px solid #1C1917; border-radius: 9999px;
             box-shadow: 6px 6px 0px #1C1917;
             transition: box-shadow 0.15s ease, transform 0.15s ease;
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
+            font-family: 'Fredoka', sans-serif; font-weight: 600;
         }
-        .btn-cartoon:hover {
-            box-shadow: 3px 3px 0px #1C1917;
-            transform: translate(3px, 3px);
-        }
-        .btn-cartoon:active {
-            box-shadow: 0px 0px 0px transparent;
-            transform: translate(6px, 6px);
-        }
+        .btn-cartoon:hover { box-shadow: 3px 3px 0px #1C1917; transform: translate(3px, 3px); }
+        .btn-cartoon:active { box-shadow: 0px 0px 0px transparent; transform: translate(6px, 6px); }
+        .btn-cartoon:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: 6px 6px 0px #1C1917; }
+        .btn-cartoon:disabled:hover { transform: none; box-shadow: 6px 6px 0px #1C1917; }
 
-        .btn-ghost {
-            border: 3px solid #D97706;
-            border-radius: 9999px;
-            transition: background 0.2s ease;
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
-        }
+        .btn-ghost { border: 3px solid #D97706; border-radius: 9999px; transition: background 0.2s ease; font-family: 'Fredoka', sans-serif; font-weight: 600; }
         .btn-ghost:hover { background: #FEF3C7; }
 
         .input-cartoon {
-            border: 3px solid #D97706;
-            border-radius: 1rem;
+            border: 3px solid #D97706; border-radius: 1rem;
             font-family: 'Fredoka', sans-serif;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .input-cartoon:focus {
-            outline: none;
-            border-color: #B45309;
-            box-shadow: 4px 4px 0px #D97706;
-        }
-        .input-cartoon::placeholder {
-            color: #A16207;
-            opacity: 0.6;
-        }
+        .input-cartoon:focus { outline: none; border-color: #B45309; box-shadow: 4px 4px 0px #D97706; }
+        .input-cartoon::placeholder { color: #A16207; opacity: 0.6; }
 
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        .star-doodle {
-            position: absolute;
-            pointer-events: none;
-            opacity: 0.12;
-        }
+        .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.4; pointer-events: none; }
+        .star-doodle { position: absolute; pointer-events: none; opacity: 0.12; }
 
         .float { animation: float 4s ease-in-out infinite; }
         .float-delay-1 { animation-delay: 1s; }
-        .float-delay-2 { animation-delay: 2s; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-16px) rotate(4deg); }
-        }
-
-        .slide-up { animation: slideUp 0.5s ease forwards; }
-        @keyframes slideUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-16px) rotate(4deg); } }
 
         .loading-dot:nth-child(1) { animation: loadDot 1.2s ease-in-out infinite; }
         .loading-dot:nth-child(2) { animation: loadDot 1.2s ease-in-out 0.15s infinite; }
         .loading-dot:nth-child(3) { animation: loadDot 1.2s ease-in-out 0.3s infinite; }
-        @keyframes loadDot {
-            0%, 80%, 100% { transform: scale(0.4); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
-        }
+        @keyframes loadDot { 0%, 80%, 100% { transform: scale(0.4); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
 
-        #resultsArea {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease, opacity 0.4s ease;
-        }
-        #resultsArea.open {
-            max-height: 2000px;
-            opacity: 1;
-        }
+        #resultsArea { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.5s ease, opacity 0.4s ease; }
+        #resultsArea.open { max-height: 3000px; opacity: 1; }
 
-        .result-card {
-            border: 3px solid #1C1917;
-            border-radius: 1.25rem;
-            box-shadow: 6px 6px 0px #1C1917;
-        }
+        .result-card { border: 3px solid #1C1917; border-radius: 1.25rem; box-shadow: 6px 6px 0px #1C1917; }
         .result-card.success { border-color: #16A34A; box-shadow: 6px 6px 0px #16A34A; }
         .result-card.error { border-color: #DC2626; box-shadow: 6px 6px 0px #DC2626; }
 
-        @media (max-width: 640px) {
-            .app-card {
-                border-width: 3px; border-radius: 1.5rem;
-                box-shadow: 8px 8px 0px #B45309;
-            }
+        .scan-line {
+            position: absolute; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, #F59E0B, #FBBF24, #F59E0B, transparent);
+            box-shadow: 0 0 14px #F59E0B, 0 0 30px rgba(245,158,11,0.3);
+            pointer-events: none; z-index: 10;
+            transition: top 0.1s linear;
+        }
+        .scan-glow {
+            position: absolute; left: 0; right: 0; height: 48px;
+            pointer-events: none; z-index: 5;
+            background: linear-gradient(180deg, rgba(245,158,11,0.10) 0%, transparent 100%);
+            transition: top 0.1s linear;
+        }
+
+        .log-entry { animation: logSlide 0.2s ease forwards; }
+        @keyframes logSlide { 0% { opacity: 0; transform: translateX(-6px); } 100% { opacity: 1; transform: translateX(0); } }
+
+        .bug-alert { animation: bugBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
+        @keyframes bugBounce { 0% { opacity: 0; transform: scale(0.6) translateY(10px); } 60% { opacity: 1; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+
+        .progress-fill { transition: width 0.5s ease; }
+
+        .magnify-icon { display: inline-block; animation: magnifyPulse 1.6s ease-in-out infinite; }
+        @keyframes magnifyPulse { 0%, 100% { transform: scale(1) rotate(0deg); } 30% { transform: scale(1.15) rotate(-6deg); } 60% { transform: scale(1) rotate(0deg); } }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #FDE68A; border-radius: 3px; }
+
+        @media (max-width: 768px) {
+            .app-card { border-width: 3px; border-radius: 1.5rem; box-shadow: 8px 8px 0px #B45309; }
             .btn-cartoon { box-shadow: 4px 4px 0px #1C1917; }
             .btn-cartoon:hover { box-shadow: 2px 2px 0px #1C1917; transform: translate(2px, 2px); }
+            .split-col { flex-direction: column !important; }
+            .split-panel { width: 100% !important; }
         }
     </style>
 </head>
 <body class="bg-cartoon-100 min-h-screen font-fredoka text-stone-900 overflow-x-hidden">
 
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="blob w-96 h-96 bg-cartoon-300 -top-20 -left-20"></div>
+        <div class="blob w-80 h-80 bg-cartoon-400 bottom-0 -right-16"></div>
         <div class="star-doodle top-12 left-[12%] float text-amber-400/20 text-5xl">✦</div>
         <div class="star-doodle bottom-32 right-[8%] float float-delay-1 text-amber-500/20 text-4xl">★</div>
-        <svg class="absolute bottom-0 left-0 w-full h-32 text-cartoon-300/30" preserveAspectRatio="none" viewBox="0 0 1440 120" fill="currentColor">
-            <path d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
-        </svg>
+        <svg class="absolute bottom-0 left-0 w-full h-32 text-cartoon-300/30" preserveAspectRatio="none" viewBox="0 0 1440 120" fill="currentColor"><path d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path></svg>
     </div>
 
-    <main class="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
-        <div class="app-card w-full max-w-2xl bg-white/95 backdrop-blur-sm p-6 sm:p-10">
+    <main class="relative z-10 min-h-screen flex items-start justify-center px-3 py-6 sm:px-4 sm:py-10">
+        <div class="app-card w-full max-w-5xl bg-white/95 backdrop-blur-sm p-5 sm:p-8">
 
-            <div class="flex items-center justify-between mb-8">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-5">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-cartoon-500 flex items-center justify-center text-white text-lg font-archivo shadow-[3px_3px_0px_#92400E]">
-                        G
-                    </div>
+                    <div class="w-10 h-10 rounded-full bg-cartoon-500 flex items-center justify-center text-white text-lg font-archivo shadow-[3px_3px_0px_#92400E]">G</div>
                     <span class="text-cartoon-700 font-archivo tracking-tight">GitPR AI</span>
                 </div>
                 <div class="flex items-center gap-3">
@@ -171,14 +138,13 @@
                         </div>
                         <span id="userLogin" class="font-semibold text-sm text-stone-800">@username</span>
                     </div>
-                    <button id="disconnectBtn" class="btn-ghost text-xs text-cartoon-700 px-3 py-1.5">
-                        Leave
-                    </button>
+                    <button id="disconnectBtn" class="btn-ghost text-xs text-cartoon-700 px-3 py-1.5">Leave</button>
                 </div>
             </div>
 
-            <hr class="border-cartoon-200 mb-8">
+            <hr class="border-cartoon-200 mb-5">
 
+            <!-- Loading Auth -->
             <div id="loadingAuth" class="text-center py-12">
                 <div class="flex items-center justify-center gap-2 mb-3">
                     <span class="loading-dot w-3 h-3 bg-cartoon-500 rounded-full inline-block"></span>
@@ -188,48 +154,130 @@
                 <p class="text-stone-500">Checking authentication...</p>
             </div>
 
-            <div id="appContent" class="hidden space-y-6">
+            <!-- App Content -->
+            <div id="appContent" class="hidden">
 
-                <div class="space-y-4">
-                    <label class="block font-semibold text-stone-800">
-                        Repository
-                    </label>
+                <!-- Input Form (full width) -->
+                <div id="inputForm" class="max-w-xl mx-auto space-y-4">
+                    <label class="block font-semibold text-stone-800">Repository</label>
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <input type="text" id="repoName" placeholder="owner/repo or GitHub URL" required
-                            class="input-cartoon flex-1 px-4 py-3 bg-white text-stone-900 text-base">
-                        <input type="text" id="branchName" value="main" required
-                            class="input-cartoon w-full sm:w-28 px-4 py-3 bg-white text-stone-900 text-base">
+                        <input type="text" id="repoName" placeholder="owner/repo or GitHub URL" required class="input-cartoon flex-1 px-4 py-3 bg-white text-stone-900 text-base">
+                        <input type="text" id="branchName" value="main" required class="input-cartoon w-full sm:w-28 px-4 py-3 bg-white text-stone-900 text-base">
                     </div>
-
-                    <button type="button" id="submitBtn" disabled
-                        class="btn-cartoon w-full bg-cartoon-500 text-white px-8 py-3.5 text-base flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                    <button type="button" id="submitBtn" disabled class="btn-cartoon w-full bg-cartoon-500 text-white px-8 py-3.5 text-base flex items-center justify-center gap-2">
                         <span id="btnText">Analyze & Fix</span>
-                        <span id="btnLoader" class="flex items-center gap-1 hidden">
-                            <span class="loading-dot w-2 h-2 bg-white rounded-full inline-block"></span>
-                            <span class="loading-dot w-2 h-2 bg-white rounded-full inline-block"></span>
-                            <span class="loading-dot w-2 h-2 bg-white rounded-full inline-block"></span>
-                        </span>
+                        <span id="btnLoader" class="hidden"><svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
                     </button>
                 </div>
 
-                <div id="resultsArea">
+                <!-- Split View (hidden until analysis starts) -->
+                <div id="splitView" class="hidden">
+                    <div class="flex flex-col md:flex-row md:gap-6 split-col">
+
+                        <!-- ===== LEFT PANEL ===== -->
+                        <div class="split-panel w-full md:w-[38%] space-y-5">
+
+                            <!-- Repo info read-only -->
+                            <div class="bg-cartoon-50 border-2 border-cartoon-300 rounded-2xl p-4">
+                                <p class="text-xs text-stone-500 uppercase tracking-wider font-semibold mb-1">Repository</p>
+                                <p id="activeRepoName" class="font-semibold text-stone-800 truncate">—</p>
+                                <p class="text-xs text-stone-500 mt-1">Branch: <span id="activeBranchName" class="font-semibold">—</span></p>
+                            </div>
+
+                            <!-- Progress -->
+                            <div>
+                                <div class="flex items-center justify-between text-sm mb-1.5">
+                                    <span class="font-semibold text-stone-700">Progress</span>
+                                    <span id="progressPercent" class="text-stone-500 text-xs font-mono">0%</span>
+                                </div>
+                                <div class="bg-cartoon-200 rounded-full h-3 overflow-hidden">
+                                    <div id="progressBar" class="progress-fill h-full bg-cartoon-500 rounded-full" style="width:0%"></div>
+                                </div>
+                                <p id="fileCounter" class="text-xs text-stone-500 mt-1 font-mono">0 / 0 files</p>
+                            </div>
+
+                            <!-- Bugs / Feedback -->
+                            <div>
+                                <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Issues & Feedback</p>
+                                <div id="bugAlerts" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
+                                <p id="noIssuesMsg" class="hidden text-sm text-stone-500 italic">No issues detected so far.</p>
+                            </div>
+
+                            <!-- Activity Log -->
+                            <div>
+                                <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Activity</p>
+                                <div id="logContainer" class="bg-stone-900 text-cartoon-100 rounded-xl p-3 max-h-36 overflow-y-auto text-xs font-mono leading-relaxed space-y-1"></div>
+                            </div>
+
+                            <!-- Cancel / New -->
+                            <div class="flex gap-2">
+                                <button id="cancelBtn" class="btn-ghost flex-1 text-sm text-stone-600 py-2">Cancel</button>
+                                <button id="newAnalysisBtn" class="btn-ghost flex-1 text-sm text-cartoon-700 py-2 hidden">New Analysis</button>
+                            </div>
+                        </div>
+
+                        <!-- ===== RIGHT PANEL ===== -->
+                        <div class="split-panel w-full md:w-[62%] mt-5 md:mt-0">
+
+                            <!-- File Scanner -->
+                            <div id="scannerCard" class="bg-stone-900 rounded-2xl border-2 border-cartoon-600 overflow-hidden">
+                                <!-- Scanner header -->
+                                <div class="flex items-center gap-3 px-5 py-4 border-b border-stone-700">
+                                    <span class="magnify-icon text-xl shrink-0">🔍</span>
+                                    <div class="min-w-0 flex-1">
+                                        <p id="currentFilePath" class="text-cartoon-100 font-semibold text-sm truncate">Waiting...</p>
+                                        <p id="currentFileLine" class="text-cartoon-400 text-xs hidden">
+                                            Line <span id="scanProgressLine">0</span> / <span id="scanTotalLines">0</span>
+                                        </p>
+                                    </div>
+                                    <span id="fileScanCounter" class="text-cartoon-400 text-xs font-mono shrink-0">—</span>
+                                </div>
+                                <!-- Code area -->
+                                <div class="relative px-5 py-4" id="codeViewContainer">
+                                    <div id="codeLinesRenderer" class="relative text-xs font-mono leading-relaxed space-y-0.5 min-h-[280px] max-h-[400px] overflow-y-auto">
+                                        <div class="text-stone-500 text-center py-16">Awaiting file analysis...</div>
+                                    </div>
+                                    <div class="scan-glow" id="scanGlow" style="top:-48px"></div>
+                                    <div class="scan-line" id="scanLine" style="top:-3px"></div>
+                                </div>
+                                <!-- Scanner footer (file status) -->
+                                <div id="scannerStatus" class="px-5 py-3 border-t border-stone-700 text-xs text-stone-500 hidden">
+                                    <span id="scannerStatusText"></span>
+                                </div>
+                            </div>
+
+                            <!-- Completion card (shown after analysis) -->
+                            <div id="completionCard" class="hidden bg-green-50 border-2 border-green-400 rounded-2xl p-6 text-center mt-4">
+                                <span class="text-3xl">✦</span>
+                                <h3 class="font-archivo text-lg text-stone-800 mt-2">Analysis Complete</h3>
+                                <p id="completionMessage" class="text-sm text-stone-600 mt-1"></p>
+                                <div id="completionPRLink" class="hidden mt-3">
+                                    <a id="prUrlLink" href="#" target="_blank" class="btn-cartoon inline-flex items-center gap-2 bg-stone-900 text-white px-6 py-2.5 text-sm no-underline">View Pull Request →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Area -->
+                <div id="resultsArea" class="mt-6 max-w-2xl mx-auto">
                     <div id="resultsContent"></div>
                 </div>
 
             </div>
 
+            <!-- Auth Failed -->
             <div id="authFailed" class="hidden text-center py-12 space-y-4">
                 <span class="text-5xl">🔒</span>
                 <p class="text-stone-600">GitHub account not connected.</p>
-                <a href="/" class="btn-cartoon inline-block bg-stone-900 text-white px-8 py-3 no-underline">
-                    Go back
-                </a>
+                <a href="/" class="btn-cartoon inline-block bg-stone-900 text-white px-8 py-3 no-underline">Go back</a>
             </div>
 
         </div>
     </main>
 
     <script>
+        // ─── DOM refs ───────────────────────────────────────────
         const userInitial = document.getElementById('userInitial');
         const userLogin = document.getElementById('userLogin');
         const disconnectBtn = document.getElementById('disconnectBtn');
@@ -243,110 +291,337 @@
         const loadingAuth = document.getElementById('loadingAuth');
         const appContent = document.getElementById('appContent');
         const authFailed = document.getElementById('authFailed');
+        const inputForm = document.getElementById('inputForm');
+        const splitView = document.getElementById('splitView');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const newAnalysisBtn = document.getElementById('newAnalysisBtn');
 
+        const activeRepoName = document.getElementById('activeRepoName');
+        const activeBranchName = document.getElementById('activeBranchName');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const fileCounter = document.getElementById('fileCounter');
+        const bugAlerts = document.getElementById('bugAlerts');
+        const noIssuesMsg = document.getElementById('noIssuesMsg');
+        const logContainer = document.getElementById('logContainer');
+
+        const currentFilePath = document.getElementById('currentFilePath');
+        const currentFileLine = document.getElementById('currentFileLine');
+        const scanProgressLine = document.getElementById('scanProgressLine');
+        const scanTotalLines = document.getElementById('scanTotalLines');
+        const fileScanCounter = document.getElementById('fileScanCounter');
+        const codeLinesRenderer = document.getElementById('codeLinesRenderer');
+        const scanLine = document.getElementById('scanLine');
+        const scanGlow = document.getElementById('scanGlow');
+        const scannerStatus = document.getElementById('scannerStatus');
+        const scannerStatusText = document.getElementById('scannerStatusText');
+        const scannerCard = document.getElementById('scannerCard');
+        const completionCard = document.getElementById('completionCard');
+        const completionMessage = document.getElementById('completionMessage');
+        const completionPRLink = document.getElementById('completionPRLink');
+        const prUrlLink = document.getElementById('prUrlLink');
+
+        let eventSource = null;
+        let isAnalyzing = false;
+        let scanAnimFrame = null;
+        let scanStartTime = 0;
+        let scanTotalLinesCount = 0;
+
+        // ─── Disconnect ────────────────────────────────────────
         disconnectBtn.addEventListener('click', async () => {
             await fetch('/api/v1/auth/github/logout', { method: 'POST' });
             window.location.href = '/';
         });
 
+        // ─── Form validation ───────────────────────────────────
         repoName.addEventListener('input', validateForm);
         branchName.addEventListener('input', validateForm);
-
         function validateForm() {
-            const valid = repoName.value.trim().length > 0 && branchName.value.trim().length > 0;
-            submitBtn.disabled = !valid;
-            if (valid) {
-                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            } else {
-                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            submitBtn.disabled = !(repoName.value.trim().length > 0 && branchName.value.trim().length > 0);
+        }
+
+        // ─── Start Analysis ────────────────────────────────────
+        submitBtn.addEventListener('click', startAnalysis);
+
+        function startAnalysis() {
+            if (submitBtn.disabled || isAnalyzing) return;
+
+            isAnalyzing = true;
+            bugAlerts.innerHTML = '';
+            logContainer.innerHTML = '';
+            noIssuesMsg.classList.add('hidden');
+            newAnalysisBtn.classList.add('hidden');
+            completionCard.classList.add('hidden');
+            scannerStatus.classList.add('hidden');
+            scannerCard.classList.remove('border-red-500', 'border-green-500');
+            scannerCard.classList.add('border-cartoon-600');
+            scanLine.style.top = '-3px';
+            scanGlow.style.top = '-48px';
+
+            const rawRepo = repoName.value.trim();
+            const rawBranch = branchName.value.trim();
+            activeRepoName.textContent = rawRepo;
+            activeBranchName.textContent = rawBranch;
+
+            inputForm.classList.add('hidden');
+            splitView.classList.remove('hidden');
+
+            const repoEnc = encodeURIComponent(rawRepo);
+            const branchEnc = encodeURIComponent(rawBranch);
+
+            eventSource = new EventSource(`/api/v1/analyze-and-fix/stream?repo=${repoEnc}&branch=${branchEnc}`);
+
+            eventSource.onmessage = function (e) {
+                try { handleEvent(JSON.parse(e.data)); }
+                catch (err) { console.error('SSE err', err); }
+            };
+            eventSource.onerror = function () {
+                if (eventSource.readyState === EventSource.CLOSED) return;
+                addLog('error', 'Connection lost. Retrying...');
+            };
+        }
+
+        // ─── Event handler ─────────────────────────────────────
+        function handleEvent(data) {
+            switch (data.type) {
+
+                case 'start':
+                    addLog('info', data.message);
+                    resetScanView();
+                    break;
+
+                case 'analyzing':
+                    currentFilePath.textContent = data.file;
+                    fileScanCounter.textContent = `${data.index}/${data.total}`;
+                    scanTotalLinesCount = data.lines || 0;
+                    scanTotalLines.textContent = scanTotalLinesCount;
+                    scanProgressLine.textContent = '0';
+                    currentFileLine.classList.remove('hidden');
+                    scannerStatus.classList.add('hidden');
+
+                    updateProgress(data.index, data.total);
+                    renderCodeContent(data.code_preview || '', data.lines || 0);
+                    startScanAnimation(data.lines || 0);
+
+                    addLog('analyzing', data.file);
+                    break;
+
+                case 'bug_found':
+                    stopScanAnimation();
+                    scanProgressLine.textContent = scanTotalLinesCount;
+                    scannerStatus.classList.remove('hidden');
+                    scannerStatusText.innerHTML = '⚠ Bug detected';
+                    scannerCard.classList.remove('border-cartoon-600');
+                    scannerCard.classList.add('border-red-500');
+                    addLog('bug', `${data.file} — ${data.description}`);
+                    addBugAlert(data.file, data.description, data.proposed_fix);
+                    break;
+
+                case 'clean':
+                    stopScanAnimation();
+                    scanProgressLine.textContent = scanTotalLinesCount;
+                    scannerStatus.classList.remove('hidden');
+                    scannerStatusText.innerHTML = '✓ No issues';
+                    scannerCard.classList.remove('border-cartoon-600');
+                    scannerCard.classList.add('border-green-500');
+                    addLog('clean', `${data.file} — clean`);
+                    break;
+
+                case 'skip':
+                    addLog('skip', `${data.file} — ${data.reason}`);
+                    break;
+
+                case 'info':
+                    addLog('info', data.message);
+                    break;
+
+                case 'error':
+                    isAnalyzing = false;
+                    closeEventSource();
+                    addLog('error', data.message);
+                    showScannerError(data.message);
+                    finishWithError(data.message);
+                    break;
+
+                case 'complete':
+                    isAnalyzing = false;
+                    closeEventSource();
+                    addLog('success', 'Analysis complete!');
+                    updateProgress(1, 1);
+                    showCompletion(data);
+                    break;
             }
         }
 
-        submitBtn.addEventListener('click', async () => {
-            if (submitBtn.disabled) return;
+        function resetScanView() {
+            scanLine.style.top = '-3px';
+            scanGlow.style.top = '-48px';
+            currentFilePath.textContent = 'Waiting for next file...';
+            currentFileLine.classList.add('hidden');
+            scannerStatus.classList.add('hidden');
+            scannerCard.classList.remove('border-red-500', 'border-green-500');
+            scannerCard.classList.add('border-cartoon-600');
+        }
 
-            submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            btnText.textContent = 'Analyzing';
-            btnLoader.classList.remove('hidden');
-            resultsArea.classList.remove('open');
-            resultsContent.innerHTML = '';
+        function showScannerError(msg) {
+            currentFilePath.textContent = 'Error';
+            scannerStatus.classList.remove('hidden');
+            scannerStatusText.innerHTML = `✕ ${msg}`;
+            scannerCard.classList.remove('border-cartoon-600', 'border-green-500');
+            scannerCard.classList.add('border-red-500');
+        }
 
-            try {
-                const res = await fetch('/api/v1/analyze-and-fix', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        repo_name: repoName.value.trim(),
-                        branch: branchName.value.trim()
-                    })
-                });
-                const data = await res.json();
-                if (!res.ok) {
-                    renderResult('error', data.detail || 'Something went wrong');
-                } else {
-                    renderResult('success', data);
-                }
-            } catch (err) {
-                renderResult('error', err.message);
-            } finally {
-                btnText.textContent = 'Analyze & Fix';
-                btnLoader.classList.add('hidden');
-                validateForm();
-            }
+        function closeEventSource() {
+            if (eventSource) { eventSource.close(); eventSource = null; }
+            stopScanAnimation();
+        }
+
+        cancelBtn.addEventListener('click', () => {
+            if (isAnalyzing) { closeEventSource(); isAnalyzing = false; }
+            resetToForm();
         });
 
-        function renderResult(type, data) {
-            if (type === 'error') {
-                resultsContent.innerHTML = `
-                    <div class="result-card error bg-red-50 p-5 mt-4">
-                        <div class="flex items-center gap-3 mb-2">
-                            <span class="text-2xl">✕</span>
-                            <span class="font-fredoka font-semibold text-stone-800">Oops!</span>
-                        </div>
-                        <p class="text-stone-600 text-sm">${escapeHtml(data)}</p>
-                    </div>
-                `;
-            } else {
-                let bugsHtml = '';
-                if (data.bugs_found && data.bugs_found.length > 0) {
-                    bugsHtml = data.bugs_found.map(bug => `
-                        <div class="bg-cartoon-50 border-2 border-cartoon-300 rounded-xl p-4 mt-3">
-                            <p class="font-fredoka font-semibold text-sm text-stone-800 mb-1">${escapeHtml(bug.file_path)}</p>
-                            <p class="text-sm text-stone-600 mb-3">${escapeHtml(bug.description)}</p>
-                            <pre class="bg-stone-900 text-cartoon-200 text-xs rounded-xl p-4 overflow-x-auto leading-relaxed"><code>${escapeHtml(bug.proposed_fix)}</code></pre>
-                        </div>
-                    `).join('');
-                }
+        newAnalysisBtn.addEventListener('click', resetToForm);
 
-                resultsContent.innerHTML = `
-                    <div class="result-card success bg-green-50 p-5 mt-4">
-                        <div class="flex items-center gap-3 mb-2">
-                            <span class="text-2xl">✦</span>
-                            <span class="font-fredoka font-semibold text-stone-800">All Done!</span>
-                        </div>
-                        <p class="text-stone-600 text-sm">${escapeHtml(data.message)}</p>
-                        ${data.pr_url ? `
-                            <a href="${data.pr_url}" target="_blank" class="btn-cartoon inline-flex items-center gap-2 bg-stone-900 text-white px-6 py-2.5 text-sm mt-4 no-underline w-auto">
-                                View Pull Request →
-                            </a>
-                        ` : ''}
-                    </div>
-                    ${bugsHtml}
-                `;
-            }
-            resultsArea.classList.add('open');
-            resultsContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        function resetToForm() {
+            splitView.classList.add('hidden');
+            inputForm.classList.remove('hidden');
+            submitBtn.disabled = false;
+            btnLoader.classList.add('hidden');
+            btnText.textContent = 'Analyze & Fix';
         }
 
+        // ─── Progress ──────────────────────────────────────────
+        function updateProgress(current, total) {
+            const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+            progressBar.style.width = pct + '%';
+            progressPercent.textContent = pct + '%';
+            fileCounter.textContent = `${current} / ${total} files`;
+        }
+
+        // ─── Code content render ───────────────────────────────
+        function renderCodeContent(codePreview, totalLines) {
+            const lines = codePreview ? codePreview.split('\n') : [];
+            const displayCount = Math.min(lines.length, 30);
+            let html = '';
+            const maxChars = 80;
+            for (let i = 0; i < displayCount; i++) {
+                const lineNum = i + 1;
+                let text = lines[i] !== undefined ? lines[i] : '';
+                if (text.length > maxChars) text = text.slice(0, maxChars) + '…';
+                const escaped = escapeHtml(text) || '&nbsp;';
+                html += `<div class="flex items-baseline gap-3 text-xs" style="line-height:1.7">
+                    <span class="text-stone-600 w-8 text-right shrink-0 select-none">${lineNum}</span>
+                    <span class="text-cartoon-200 font-mono whitespace-pre-wrap break-all">${escaped}</span>
+                </div>`;
+            }
+            if (displayCount < totalLines) {
+                html += `<div class="text-stone-600 text-xs text-center py-2">⋯ ${totalLines - displayCount} more lines ⋯</div>`;
+            }
+            codeLinesRenderer.innerHTML = html;
+        }
+
+        // ─── Scan animation ────────────────────────────────────
+        function startScanAnimation(totalLines) {
+            stopScanAnimation();
+            if (totalLines <= 0) totalLines = 1;
+            scanTotalLinesCount = totalLines;
+            scanStartTime = performance.now();
+            scanDuration = Math.min(2500, Math.max(600, totalLines * 15));
+
+            const container = codeLinesRenderer;
+            const containerHeight = container.scrollHeight || 280;
+
+            function animate(now) {
+                const elapsed = now - scanStartTime;
+                const progress = Math.min(elapsed / scanDuration, 1);
+                const currentLine = Math.round(progress * totalLines);
+                scanProgressLine.textContent = Math.min(currentLine, totalLines);
+
+                const yPos = progress * (containerHeight - 3);
+                scanLine.style.top = Math.max(0, yPos) + 'px';
+                scanGlow.style.top = Math.max(-48, yPos - 45) + 'px';
+
+                if (progress < 1) { scanAnimFrame = requestAnimationFrame(animate); }
+            }
+            scanAnimFrame = requestAnimationFrame(animate);
+        }
+
+        function stopScanAnimation() {
+            if (scanAnimFrame) { cancelAnimationFrame(scanAnimFrame); scanAnimFrame = null; }
+        }
+
+        // ─── Log ───────────────────────────────────────────────
+        function addLog(type, message) {
+            const icons = { info: '→', analyzing: '🔍', clean: '✓', bug: '⚠', skip: '–', error: '✕', success: '✦' };
+            const colors = { info: 'text-cartoon-300', analyzing: 'text-cartoon-200', clean: 'text-green-400', bug: 'text-red-400', skip: 'text-stone-500', error: 'text-red-400', success: 'text-green-400' };
+            const icon = icons[type] || '•';
+            const colorClass = colors[type] || 'text-cartoon-200';
+
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            div.innerHTML = `<span class="${colorClass}">${icon}</span> ${escapeHtml(message)}`;
+            logContainer.appendChild(div);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // ─── Bug alert ─────────────────────────────────────────
+        function addBugAlert(file, description, proposedFix) {
+            noIssuesMsg.classList.add('hidden');
+            const div = document.createElement('div');
+            div.className = 'bug-alert bg-red-50 border-2 border-red-300 rounded-xl p-3';
+            div.innerHTML = `
+                <div class="flex items-start gap-2">
+                    <span class="text-base shrink-0 mt-0.5">⚠️</span>
+                    <div class="min-w-0">
+                        <p class="font-semibold text-xs text-stone-800 truncate">${escapeHtml(file)}</p>
+                        <p class="text-xs text-stone-600 mt-0.5">${escapeHtml(description)}</p>
+                    </div>
+                </div>
+                <pre class="mt-2 bg-stone-900 text-red-200 text-[10px] rounded-lg p-2.5 overflow-x-auto leading-relaxed max-h-24 overflow-y-auto"><code>${escapeHtml(proposedFix)}</code></pre>
+            `;
+            bugAlerts.appendChild(div);
+            bugAlerts.scrollTop = bugAlerts.scrollHeight;
+        }
+
+        // ─── Completion ────────────────────────────────────────
+        function showCompletion(data) {
+            completionCard.classList.remove('hidden');
+            completionMessage.textContent = data.message || 'All done!';
+            if (data.pr_url) {
+                completionPRLink.classList.remove('hidden');
+                prUrlLink.href = data.pr_url;
+            } else {
+                completionPRLink.classList.add('hidden');
+            }
+            newAnalysisBtn.classList.remove('hidden');
+            scannerStatus.classList.add('hidden');
+            scanLine.style.opacity = '0';
+            currentFilePath.textContent = '✓ Complete';
+            fileScanCounter.textContent = '✓';
+        }
+
+        function finishWithError(message) {
+            newAnalysisBtn.classList.remove('hidden');
+            const div = document.createElement('div');
+            div.className = 'bug-alert result-card error bg-red-50 p-4';
+            div.innerHTML = `
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xl">✕</span>
+                    <span class="font-fredoka font-semibold text-sm text-stone-800">Analysis Failed</span>
+                </div>
+                <p class="text-xs text-stone-600">${escapeHtml(message)}</p>
+            `;
+            bugAlerts.prepend(div);
+        }
+
+        // ─── Helpers ───────────────────────────────────────────
         function escapeHtml(str) {
             if (!str) return '';
-            return String(str)
-                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
+        // ─── Init ──────────────────────────────────────────────
         async function init() {
             try {
                 const res = await fetch('/api/v1/auth/github/status');
@@ -366,7 +641,6 @@
                 authFailed.classList.remove('hidden');
             }
         }
-
         init();
     </script>
 </body>
