@@ -1,4 +1,5 @@
 import json
+import re
 import secrets
 from urllib import parse, request as urllib_request
 
@@ -12,6 +13,20 @@ from app.models.schemas import RepoRequest, AgentResponse
 from app.services.agent_service import AgentService
 from app.services.github_service import GithubService
 
+
+def parse_repo_name(raw: str) -> str:
+    raw = raw.strip().rstrip("/")
+    m = re.search(r"github\.com[/:]([^/]+)/([^/]+?)(?:\.git)?$", raw)
+    if m:
+        return f"{m.group(1)}/{m.group(2)}"
+    if raw.count("/") == 1 and not raw.startswith("http"):
+        return raw
+    raise ValueError(
+        "Invalid repository format. Use owner/repo or a GitHub URL like "
+        "https://github.com/owner/repo"
+    )
+
+
 router = APIRouter()
 agent_service = AgentService()
 
@@ -22,8 +37,13 @@ async def analyze_and_fix_repo(request: Request, payload: RepoRequest):
         raise HTTPException(status_code=401, detail="GitHub account is not connected")
 
     try:
+        repo = parse_repo_name(payload.repo_name)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    try:
         response = await agent_service.process_repository(
-            payload.repo_name,
+            repo,
             payload.branch,
             access_token,
         )
