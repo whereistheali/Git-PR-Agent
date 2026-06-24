@@ -5,6 +5,8 @@ from urllib import parse, request as urllib_request
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
+from github import GithubException
+
 from app.core.config import settings
 from app.models.schemas import RepoRequest, AgentResponse
 from app.services.agent_service import AgentService
@@ -26,6 +28,22 @@ async def analyze_and_fix_repo(request: Request, payload: RepoRequest):
             access_token,
         )
         return response
+    except GithubException as e:
+        status = e.status if hasattr(e, 'status') else 500
+        gh_message = ""
+        if hasattr(e, 'data') and isinstance(e.data, dict):
+            gh_message = e.data.get('message', '')
+        if status == 404:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Repository '{payload.repo_name}' not found. Make sure the name is correct (e.g., owner/repo) and your GitHub account has access to it."
+            )
+        if status == 403:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Access denied. Your GitHub account doesn't have permission to access '{payload.repo_name}'."
+            )
+        raise HTTPException(status_code=status, detail=gh_message or str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
