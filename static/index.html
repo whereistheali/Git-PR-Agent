@@ -134,30 +134,24 @@
     </div>
 
     <main class="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
-        <div class="hero-card w-full max-w-lg bg-white/95 backdrop-blur-sm p-8 sm:p-12 text-center">
+        <div class="hero-card w-full max-w-4xl bg-white/95 backdrop-blur-sm p-8 sm:p-12 text-center">
 
-            <div class="flex items-center justify-center gap-3 mb-4">
-                <div class="w-12 h-12 rounded-full bg-cartoon-500 flex items-center justify-center text-white text-2xl font-archivo shadow-[3px_3px_0px_#92400E]">
-                    G
-                </div>
-                <span class="text-cartoon-700 font-archivo tracking-tight text-xl">GitPR AI</span>
-            </div>
+          
 
             <h1 class="font-archivo text-4xl sm:text-5xl leading-tight text-stone-900 mb-4">
                 Your Autonomous<br>
-                <span class="text-cartoon-600">PR Agent</span>
+                <span class="text-cartoon-600">Pull Request Agent</span>
             </h1>
 
             <p class="text-stone-600 text-base sm:text-lg leading-relaxed mb-8">
                 Connect your GitHub account and let AI scan your repositories for bugs, then automatically create pull requests with fixes.
             </p>
 
-            <div id="notConnected" class="space-y-6">
-                <button id="connectGithubBtn" class="btn-cartoon w-full flex items-center justify-center gap-3 bg-stone-900 text-white px-8 py-4 text-lg pulse-glow">
+            <div id="notConnected" class="space-y-6 items-center justify-center flex flex-col">
+                <button id="connectGithubBtn" class="btn-cartoon w-full max-w-md flex items-center justify-center gap-3 bg-stone-900 text-white px-8 py-4 text-lg pulse-glow">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                     Connect GitHub Account
                 </button>
-                <p class="text-sm text-stone-500">You'll be redirected to authorize via OAuth</p>
             </div>
 
             <div id="alreadyConnected" class="hidden space-y-6">
@@ -193,14 +187,54 @@
         const landingUserInitial = document.getElementById('landingUserInitial');
         const disconnectLanding = document.getElementById('disconnectFromLanding');
 
+        let pollTimer = null;
+
         connectBtn.addEventListener('click', () => {
-            window.open('/api/v1/auth/github/login', 'github_oauth', 'width=600,height=700');
+            const popup = window.open('/api/v1/auth/github/login', 'github_oauth', 'width=600,height=700');
+            if (!popup) {
+                window.location.href = '/api/v1/auth/github/login';
+                return;
+            }
+            startPolling();
+            connectBtn.disabled = true;
+            connectBtn.textContent = 'Waiting for authorization...';
+            connectBtn.classList.remove('pulse-glow');
         });
 
         disconnectLanding.addEventListener('click', async () => {
             await fetch('/api/v1/auth/github/logout', { method: 'POST' });
             location.reload();
         });
+
+        function startPolling() {
+            stopPolling();
+            pollTimer = setInterval(async () => {
+                try {
+                    const res = await fetch('/api/v1/auth/github/status');
+                    const data = await res.json();
+                    if (data.connected) {
+                        stopPolling();
+                        window.location.href = '/app';
+                    }
+                } catch {}
+            }, 1000);
+            setTimeout(() => {
+                stopPolling();
+                connectBtn.disabled = false;
+                connectBtn.innerHTML = `
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    Connect GitHub Account
+                `;
+                connectBtn.classList.add('pulse-glow');
+            }, 60000);
+        }
+
+        function stopPolling() {
+            if (pollTimer) {
+                clearInterval(pollTimer);
+                pollTimer = null;
+            }
+        }
 
         async function checkStatus() {
             try {
