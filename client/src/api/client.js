@@ -1,16 +1,20 @@
 const BASE_URL = import.meta.env.VITE_API_URL || ''
-const KEY = 'gitpr_session_token'
+
+const STORAGE_TOKEN = 'gitpr_token'
+const STORAGE_LOGIN = 'gitpr_login'
 
 export function setSessionToken(token) {
-  if (token) {
-    sessionStorage.setItem(KEY, token)
-  } else {
-    sessionStorage.removeItem(KEY)
-  }
+  if (token) sessionStorage.setItem(STORAGE_TOKEN, token)
+  else sessionStorage.removeItem(STORAGE_TOKEN)
 }
 
 export function getSessionToken() {
-  return sessionStorage.getItem(KEY)
+  return sessionStorage.getItem(STORAGE_TOKEN)
+}
+
+export function clearSession() {
+  sessionStorage.removeItem(STORAGE_TOKEN)
+  sessionStorage.removeItem(STORAGE_LOGIN)
 }
 
 export function apiUrl(path) {

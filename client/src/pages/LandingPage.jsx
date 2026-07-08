@@ -15,6 +15,7 @@ export default function LandingPage() {
     function onMessage(e) {
       if (e.data?.type === 'connected') {
         if (e.data.token) setSessionToken(e.data.token)
+        if (e.data.login) sessionStorage.setItem('gitpr_login', e.data.login)
         stopPolling()
         setConnecting(false)
         navigate('/app')

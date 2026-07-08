@@ -1,11 +1,19 @@
 import { useState, useEffect, useCallback } from 'react'
-import { apiUrl, apiFetch } from '../api/client'
+import { apiUrl, apiFetch, clearSession } from '../api/client'
 
 export function useAuth() {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(() => {
+    const login = sessionStorage.getItem('gitpr_login')
+    if (login) return { login, initial: login.charAt(0).toUpperCase() }
+    return null
+  })
+  const [loading, setLoading] = useState(!user)
 
   useEffect(() => {
+    if (user) {
+      setLoading(false)
+      return
+    }
     checkStatus()
   }, [])
 
@@ -14,6 +22,7 @@ export function useAuth() {
       const res = await apiFetch('/api/v1/auth/github/status')
       const data = await res.json()
       if (data.connected) {
+        sessionStorage.setItem('gitpr_login', data.login)
         setUser({ login: data.login, initial: data.login.charAt(0).toUpperCase() })
       }
     } catch {
@@ -34,6 +43,7 @@ export function useAuth() {
   }, [])
 
   const disconnect = useCallback(async () => {
+    clearSession()
     await apiFetch('/api/v1/auth/github/logout', { method: 'POST' })
     setUser(null)
   }, [])

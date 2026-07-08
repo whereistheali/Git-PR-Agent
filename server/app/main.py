@@ -26,7 +26,7 @@ app.add_middleware(
     ],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["X-GitHub-Token", "Content-Type", "Accept", "Origin"],
 )
 
 app.include_router(router, prefix="/api/v1")
