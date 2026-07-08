@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import BaseSettings, SettingsSourceCallable
 
 class Settings(BaseSettings):
     GITHUB_CLIENT_ID: str
@@ -8,6 +8,6 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: str
     OPENROUTER_MODEL: str
     
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config: SettingsSourceCallable = {"env_file": ".env"}
 
 settings = Settings()
