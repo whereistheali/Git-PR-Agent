@@ -8,10 +8,10 @@ from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 
 from github import GithubException
 
-from server.app.core.config import settings
-from server.app.models.schemas import RepoRequest, AgentResponse
-from server.app.services.agent_service import AgentService
-from server.app.services.github_service import GithubService
+from app.core.config import settings
+from app.models.schemas import RepoRequest, AgentResponse
+from app.services.agent_service import AgentService
+from app.services.github_service import GithubService
 
 
 def parse_repo_name(raw: str) -> str:

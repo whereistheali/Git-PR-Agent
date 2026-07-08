@@ -1,7 +1,7 @@
 import asyncio
-from server.app.services.github_service import GithubService
-from server.app.services.llm_service import LLMService
-from server.app.models.schemas import BugReport, AgentResponse
+from app.services.github_service import GithubService
+from app.services.llm_service import LLMService
+from app.models.schemas import BugReport, AgentResponse
 
 class AgentService:
     def __init__(self):

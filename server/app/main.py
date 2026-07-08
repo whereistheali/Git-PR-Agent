@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from starlette.middleware.sessions import SessionMiddleware
-from server.app.core.config import settings
-from server.app.api.routes import router
+from app.core.config import settings
+from app.api.routes import router
 
 app = FastAPI(
     title="Git PR AI Agent",
