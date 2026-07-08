@@ -1,5 +1,5 @@
 from openai import AsyncOpenAI
-from app.core.config import settings
+from server.app.core.config import settings
 import re
 
 class LLMService:
