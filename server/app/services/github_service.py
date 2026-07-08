@@ -1,10 +1,10 @@
-from github import Github, Auth
+from github import Github, InputFileContent
 import uuid
 import time
 
 class GithubService:
     def __init__(self, access_token: str):
-        auth = Auth.Token(access_token)
+        auth = InputFileContent(access_token)
         self.client = Github(auth=auth)
 
     def get_repo(self, repo_name: str):
