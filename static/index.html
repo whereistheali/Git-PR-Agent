@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fredoka:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -28,8 +30,16 @@
         }
     </script>
     <style>
-        *, *::before, *::after { box-sizing: border-box; }
-        body { margin: 0; font-family: 'Fredoka', sans-serif; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+        }
 
         .hero-card {
             border: 4px solid #D97706;
@@ -37,6 +47,7 @@
             box-shadow: 14px 14px 0px #B45309;
             transition: box-shadow 0.2s ease, transform 0.2s ease;
         }
+
         .hero-card:hover {
             box-shadow: 10px 10px 0px #B45309;
             transform: translate(4px, 4px);
@@ -50,10 +61,12 @@
             font-family: 'Fredoka', sans-serif;
             font-weight: 600;
         }
+
         .btn-cartoon:hover {
             box-shadow: 3px 3px 0px #1C1917;
             transform: translate(3px, 3px);
         }
+
         .btn-cartoon:active {
             box-shadow: 0px 0px 0px transparent;
             transform: translate(6px, 6px);
@@ -66,7 +79,10 @@
             font-family: 'Fredoka', sans-serif;
             font-weight: 600;
         }
-        .btn-ghost:hover { background: #FEF3C7; }
+
+        .btn-ghost:hover {
+            background: #FEF3C7;
+        }
 
         .blob {
             position: absolute;
@@ -83,97 +99,147 @@
             font-size: 2rem;
         }
 
-        .float { animation: float 4s ease-in-out infinite; }
-        .float-delay-1 { animation-delay: 1s; }
-        .float-delay-2 { animation-delay: 2s; }
+        .float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .float-delay-1 {
+            animation-delay: 1s;
+        }
+
+        .float-delay-2 {
+            animation-delay: 2s;
+        }
+
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-16px) rotate(4deg); }
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-16px) rotate(4deg);
+            }
         }
 
         .pulse-glow {
             animation: pulseGlow 2s ease-in-out infinite;
         }
+
         @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
-            50% { box-shadow: 0 0 0 20px rgba(245, 158, 11, 0); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 20px rgba(245, 158, 11, 0);
+            }
         }
 
-        .slide-up { animation: slideUp 0.5s ease forwards; }
+        .slide-up {
+            animation: slideUp 0.5s ease forwards;
+        }
+
         @keyframes slideUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @media (max-width: 640px) {
             .hero-card {
-                border-width: 3px; border-radius: 1.5rem;
+                border-width: 3px;
+                border-radius: 1.5rem;
                 box-shadow: 8px 8px 0px #B45309;
             }
+
             .hero-card:hover {
                 box-shadow: 6px 6px 0px #B45309;
                 transform: translate(2px, 2px);
             }
-            .btn-cartoon { box-shadow: 4px 4px 0px #1C1917; }
-            .btn-cartoon:hover { box-shadow: 2px 2px 0px #1C1917; transform: translate(2px, 2px); }
+
+            .btn-cartoon {
+                box-shadow: 4px 4px 0px #1C1917;
+            }
+
+            .btn-cartoon:hover {
+                box-shadow: 2px 2px 0px #1C1917;
+                transform: translate(2px, 2px);
+            }
         }
     </style>
 </head>
-<body class="bg-cartoon-100 min-h-screen font-fredoka text-stone-900 overflow-x-hidden">
+
+<body class="bg-cartoon-100 font-fredoka text-stone-900 overflow-x-hidden min-h-screen flex items-center justify-center p-4 sm:p-8">
 
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div class="star-doodle top-12 left-[12%] float text-amber-400/20 text-5xl">✦</div>
         <div class="star-doodle top-24 right-[18%] float float-delay-1 text-amber-500/20 text-4xl">★</div>
         <div class="star-doodle bottom-32 left-[8%] float float-delay-2 text-amber-400/20 text-3xl">✦</div>
-        <svg class="absolute bottom-0 left-0 w-full h-32 text-cartoon-300/30" preserveAspectRatio="none" viewBox="0 0 1440 120" fill="currentColor">
-            <path d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+        <svg class="absolute bottom-0 left-0 w-full h-32 text-cartoon-300/30" preserveAspectRatio="none"
+            viewBox="0 0 1440 120" fill="currentColor">
+            <path
+                d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z">
+            </path>
         </svg>
     </div>
 
-    <main class="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
-        <div class="hero-card w-full max-w-4xl bg-white/95 backdrop-blur-sm p-8 sm:p-12 text-center">
+    <main class="hero-card relative z-10 w-full max-w-4xl bg-white/95 backdrop-blur-sm px-6 py-12 sm:px-12 sm:py-16 text-center flex flex-col items-center justify-center gap-8">
 
-          
+        <h1 class="font-archivo text-4xl sm:text-5xl leading-tight text-stone-900 max-w-2xl mx-auto">
+            Your Autonomous<br>
+            <span class="text-cartoon-600">Pull Request Agent</span>
+        </h1>
 
-            <h1 class="font-archivo text-4xl sm:text-5xl leading-tight text-stone-900 mb-4">
-                Your Autonomous<br>
-                <span class="text-cartoon-600">Pull Request Agent</span>
-            </h1>
+        <p class="text-stone-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+            Connect your GitHub account and let AI scan your repositories for bugs, then automatically create pull
+            requests with fixes.
+        </p>
 
-            <p class="text-stone-600 text-base sm:text-lg leading-relaxed mb-8">
-                Connect your GitHub account and let AI scan your repositories for bugs, then automatically create pull requests with fixes.
-            </p>
+        <div id="notConnected" class="space-y-6 items-center justify-center flex flex-col w-full max-w-md mx-auto">
+            <button id="connectGithubBtn"
+                class="btn-cartoon w-full max-w-md flex items-center justify-center gap-3 bg-stone-900 text-white px-8 py-4 text-lg pulse-glow">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+                Connect GitHub Account
+            </button>
+        </div>
 
-            <div id="notConnected" class="space-y-6 items-center justify-center flex flex-col">
-                <button id="connectGithubBtn" class="btn-cartoon w-full max-w-md flex items-center justify-center gap-3 bg-stone-900 text-white px-8 py-4 text-lg pulse-glow">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                    Connect GitHub Account
-                </button>
-            </div>
-
-            <div id="alreadyConnected" class="hidden space-y-6">
-                <div class="bg-cartoon-50 border-2 border-cartoon-300 rounded-2xl px-5 py-4">
-                    <div class="flex items-center justify-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-cartoon-500 flex items-center justify-center text-white font-bold shadow-[2px_2px_0px_#B45309]">
-                            <span id="landingUserInitial">U</span>
-                        </div>
-                        <div class="text-left">
-                            <p class="font-semibold text-stone-800">
-                                <span id="landingUserLogin">@username</span>
-                            </p>
-                            <p class="text-xs text-stone-500">Connected</p>
-                        </div>
+        <div id="alreadyConnected" class="hidden space-y-6 w-full max-w-md mx-auto">
+            <div class="bg-cartoon-50 border-2 border-cartoon-300 rounded-2xl px-5 py-4">
+                <div class="flex items-center justify-center gap-3 text-center">
+                    <div
+                        class="w-10 h-10 rounded-full bg-cartoon-500 flex items-center justify-center text-white font-bold shadow-[2px_2px_0px_#B45309]">
+                        <span id="landingUserInitial">U</span>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-semibold text-stone-800">
+                            <span id="landingUserLogin">@username</span>
+                        </p>
+                        <p class="text-xs text-stone-500">Connected</p>
                     </div>
                 </div>
-                <a href="/app" class="btn-cartoon block w-full text-center bg-cartoon-500 text-white px-8 py-4 text-lg no-underline">
-                    Go to Dashboard →
-                </a>
-                <button id="disconnectFromLanding" class="btn-ghost w-full text-sm text-cartoon-700 py-2">
-                    Disconnect
-                </button>
             </div>
-
+            <a href="/app"
+                class="btn-cartoon block w-full text-center bg-cartoon-500 text-white px-8 py-4 text-lg no-underline">
+                Go to Dashboard →
+            </a>
+            <button id="disconnectFromLanding" class="btn-ghost w-full text-sm text-cartoon-700 py-2">
+                Disconnect
+            </button>
         </div>
+
     </main>
 
     <script>
@@ -213,7 +279,7 @@
                         stopPolling();
                         window.location.href = '/app';
                     }
-                } catch {}
+                } catch { }
             }, 1000);
             setTimeout(() => {
                 stopPolling();
@@ -243,10 +309,11 @@
                     landingUserLogin.textContent = '@' + data.login;
                     landingUserInitial.textContent = data.login.charAt(0).toUpperCase();
                 }
-            } catch {}
+            } catch { }
         }
 
         checkStatus();
     </script>
 </body>
+
 </html>
