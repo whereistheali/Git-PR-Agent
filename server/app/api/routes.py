@@ -150,57 +150,7 @@ async def github_callback(request: Request, code: str, state: str):
     request.session.pop("github_oauth_state", None)
 
     return HTMLResponse(
-        """
-        <!DOCTYPE html>
-        <html lang="en">
-        <head><meta charset="UTF-8"><title>Connected!</title>
-        <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body {
-                display: flex; align-items: center; justify-content: center;
-                min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-                background: #FFFBEB; color: #78350F;
-            }
-            .card {
-                text-align: center; padding: 3rem 2rem;
-                border: 4px solid #D97706; border-radius: 2rem;
-                background: rgba(255,255,255,0.95);
-                box-shadow: 10px 10px 0px #B45309;
-                max-width: 400px;
-            }
-            .check { font-size: 3rem; margin-bottom: 1rem; }
-            h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-            p { color: #92400E; margin-bottom: 1.5rem; }
-            a {
-                display: inline-block; padding: 0.75rem 2rem;
-                background: #1C1917; color: white; text-decoration: none;
-                border-radius: 9999px; font-weight: 600;
-                border: 3px solid #1C1917;
-                box-shadow: 4px 4px 0px #1C1917;
-                transition: all 0.15s ease;
-            }
-            a:hover { box-shadow: 2px 2px 0px #1C1917; transform: translate(2px, 2px); }
-        </style>
-        </head>
-        <body>
-            <div class="card">
-                <div class="check">&#10003;</div>
-                <h1>Connected to GitHub!</h1>
-                <p id="statusMessage">This window will close automatically.</p>
-                <a href="/app">Go to Dashboard &rarr;</a>
-            </div>
-            <script>
-                var ifPopup = window.opener && window.opener !== window;
-                if (!ifPopup) {
-                    document.getElementById('statusMessage').textContent = 'Close this tab and go to your dashboard.';
-                }
-                setTimeout(function() {
-                    window.close();
-                }, 1500);
-            </script>
-        </body>
-        </html>
-        """
+        "<script>window.close()</script>"
     )
 
 

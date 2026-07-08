@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from starlette.middleware.sessions import SessionMiddleware
 from app.core.config import settings
@@ -18,19 +17,17 @@ app.add_middleware(
     https_only=False,
 )
 
-# Mount the static directory for the UI
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
 app.include_router(router, prefix="/api/v1")
-
-@app.get("/")
-async def serve_ui():
-    return FileResponse("static/index.html")
-
-@app.get("/app")
-async def serve_app():
-    return FileResponse("static/app.html")
 
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+# Serve React build assets
+from fastapi.staticfiles import StaticFiles
+app.mount("/assets", StaticFiles(directory="../client/dist/assets"), name="assets")
+
+# SPA fallback — serve index.html for all non-API routes
+@app.get("/{full_path:path}")
+async def serve_spa(full_path: str):
+    return FileResponse("../client/dist/index.html")
