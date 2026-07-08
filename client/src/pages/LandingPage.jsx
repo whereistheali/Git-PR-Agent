@@ -12,6 +12,18 @@ export default function LandingPage() {
   const connectBtnRef = useRef(null)
 
   useEffect(() => {
+    function onMessage(e) {
+      if (e.data?.type === 'connected') {
+        stopPolling()
+        setConnecting(false)
+        navigate('/app')
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [navigate])
+
+  useEffect(() => {
     if (user) {
       stopPolling()
       setConnecting(false)

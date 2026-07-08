@@ -149,8 +149,14 @@ async def github_callback(request: Request, code: str, state: str):
     request.session["github_user_login"] = login
     request.session.pop("github_oauth_state", None)
 
+    msg = json.dumps({"type": "connected", "login": login})
     return HTMLResponse(
-        "<script>window.close()</script>"
+        f"""<script>
+if (window.opener) {{
+    window.opener.postMessage({msg}, '*');
+}}
+window.close()
+</script>"""
     )
 
 
