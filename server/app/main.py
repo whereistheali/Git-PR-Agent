@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from app.core.config import settings
 from app.api.routes import router
@@ -13,8 +13,20 @@ app = FastAPI(
 app.add_middleware(
     SessionMiddleware,
     secret_key=settings.SESSION_SECRET_KEY,
-    same_site="lax",
-    https_only=False,
+    same_site=settings.COOKIE_SAMESITE,
+    https_only=settings.COOKIE_SECURE,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://git-pr-agent.vercel.app",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(router, prefix="/api/v1")
@@ -22,12 +34,3 @@ app.include_router(router, prefix="/api/v1")
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
-
-# Serve React build assets
-from fastapi.staticfiles import StaticFiles
-app.mount("/assets", StaticFiles(directory="../client/dist/assets"), name="assets")
-
-# SPA fallback — serve index.html for all non-API routes
-@app.get("/{full_path:path}")
-async def serve_spa(full_path: str):
-    return FileResponse("../client/dist/index.html")

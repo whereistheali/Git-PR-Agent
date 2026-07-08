@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { apiFetch } from '../api/client'
 import BackgroundDecorations from '../components/BackgroundDecorations'
 
 export default function LandingPage() {
@@ -28,7 +29,7 @@ export default function LandingPage() {
     stopPolling()
     pollRef.current = setInterval(async () => {
       try {
-        const res = await fetch('/api/v1/auth/github/status')
+        const res = await apiFetch('/api/v1/auth/github/status')
         const data = await res.json()
         if (data.connected) {
           stopPolling()

@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     APP_BASE_URL: str
     OPENROUTER_API_KEY: str
     OPENROUTER_MODEL: str
+    COOKIE_SAMESITE: str = "lax"
+    COOKIE_SECURE: bool = False
     
     model_config = SettingsConfigDict(env_file=".env")
 
