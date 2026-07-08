@@ -30,9 +30,18 @@ def parse_repo_name(raw: str) -> str:
 router = APIRouter()
 agent_service = AgentService()
 
+def _get_token(request: Request) -> str | None:
+    header = request.headers.get("X-GitHub-Token")
+    if header:
+        return header
+    param = request.query_params.get("token")
+    if param:
+        return param
+    return request.session.get("github_access_token")
+
 @router.post("/analyze-and-fix", response_model=AgentResponse)
 async def analyze_and_fix_repo(request: Request, payload: RepoRequest):
-    access_token = request.session.get("github_access_token")
+    access_token = _get_token(request)
     if not access_token:
         raise HTTPException(status_code=401, detail="GitHub account is not connected")
 
@@ -70,7 +79,7 @@ async def analyze_and_fix_repo(request: Request, payload: RepoRequest):
 
 @router.get("/analyze-and-fix/stream")
 async def analyze_and_fix_stream(request: Request, repo: str, branch: str = "main"):
-    access_token = request.session.get("github_access_token")
+    access_token = _get_token(request)
     if not access_token:
         raise HTTPException(status_code=401, detail="GitHub account is not connected")
 
@@ -149,7 +158,7 @@ async def github_callback(request: Request, code: str, state: str):
     request.session["github_user_login"] = login
     request.session.pop("github_oauth_state", None)
 
-    msg = json.dumps({"type": "connected", "login": login})
+    msg = json.dumps({"type": "connected", "login": login, "token": access_token})
     return HTMLResponse(
         f"""<script>
 if (window.opener) {{
@@ -162,7 +171,7 @@ window.close()
 
 @router.get("/auth/github/status")
 async def github_status(request: Request):
-    token = request.session.get("github_access_token")
+    token = _get_token(request)
     login = request.session.get("github_user_login")
     return {"connected": bool(token), "login": login}
 

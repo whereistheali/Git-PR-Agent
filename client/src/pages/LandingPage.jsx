@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { apiFetch } from '../api/client'
+import { apiFetch, setSessionToken } from '../api/client'
 import BackgroundDecorations from '../components/BackgroundDecorations'
 
 export default function LandingPage() {
@@ -14,6 +14,7 @@ export default function LandingPage() {
   useEffect(() => {
     function onMessage(e) {
       if (e.data?.type === 'connected') {
+        if (e.data.token) setSessionToken(e.data.token)
         stopPolling()
         setConnecting(false)
         navigate('/app')

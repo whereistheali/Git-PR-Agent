@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react'
-import { apiUrl } from '../api/client'
+import { apiUrl, getSessionToken } from '../api/client'
 
 export function useAnalysis() {
   const [analyzing, setAnalyzing] = useState(false)
@@ -52,7 +52,8 @@ export function useAnalysis() {
     const repoEnc = encodeURIComponent(repo)
     const branchEnc = encodeURIComponent(branch)
 
-    const streamUrl = apiUrl(`/api/v1/analyze-and-fix/stream?repo=${repoEnc}&branch=${branchEnc}`)
+    const token = getSessionToken()
+    const streamUrl = apiUrl(`/api/v1/analyze-and-fix/stream?repo=${repoEnc}&branch=${branchEnc}${token ? `&token=${encodeURIComponent(token)}` : ''}`)
     const es = new EventSource(streamUrl, { withCredentials: true })
     eventSourceRef.current = es
 
