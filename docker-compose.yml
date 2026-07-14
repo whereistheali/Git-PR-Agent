@@ -14,8 +14,6 @@ services:
       retries: 3
       start_period: 15s
     restart: unless-stopped
-    networks:
-      - gitpr-network
 
   client:
     build:
@@ -29,9 +27,3 @@ services:
       server:
         condition: service_healthy
     restart: unless-stopped
-    networks:
-      - gitpr-network
-
-networks:
-  gitpr-network:
-    driver: bridge
