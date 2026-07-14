@@ -40,7 +40,31 @@ npm run dev
 
 The Vite dev server proxies `/api` requests to the backend automatically.
 
-### Production
+### Docker
+
+Build and run both services with a single command:
+
+```bash
+docker compose up -d
+```
+
+The frontend is served at **`http://localhost:3000`** and the API at **`http://localhost:8000`**.
+
+To rebuild after code changes:
+
+```bash
+docker compose up -d --build
+```
+
+To stop:
+
+```bash
+docker compose down
+```
+
+Environment variables are read from `server/.env`. See `.env.example` for all available options.
+
+### Production (alternative)
 
 - **Frontend** — deploy `client/` to Vercel with `VITE_API_URL` set to the backend URL
 - **Backend** — deploy `server/` to Render with root directory set to `server`, start command `uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT`, and env vars: `APP_BASE_URL`, `COOKIE_SAMESITE=none`, `COOKIE_SECURE=true`
